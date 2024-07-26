@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_expenz/constants/colors.dart';
 import 'package:my_expenz/constants/constants.dart';
 import 'package:my_expenz/screens/main_screen.dart';
-import 'package:my_expenz/screens/user_services.dart';
+import 'package:my_expenz/services/user_services.dart';
 import 'package:my_expenz/widgets/custom_button.dart';
 
 class UserDataScreen extends StatefulWidget {
