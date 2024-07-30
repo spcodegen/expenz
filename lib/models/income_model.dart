@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_expenz/models/expens_model.dart';
 
 //income category enum
 enum IncomeCategory {
@@ -42,4 +43,30 @@ class Income {
     required this.time,
     required this.description,
   });
+
+  //Covert the income object in to a JSON object
+  Map<String, dynamic> toJSON() {
+    return {
+      'id': id,
+      'title': title,
+      'amount': amount,
+      'category': category.index,
+      'date': date.toIso8601String(),
+      'time': date.toIso8601String(),
+      'description': description,
+    };
+  }
+
+  //Create a income object from a JSON object
+  factory Income.fromJSON(Map<String, dynamic> json) {
+    return Income(
+      id: json['id'],
+      title: json['title'],
+      amount: json['amount'],
+      category: IncomeCategory.values[json['category']],
+      date: DateTime.parse(json['date']),
+      time: DateTime.parse(json['time']),
+      description: json['description'],
+    );
+  }
 }
