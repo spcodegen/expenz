@@ -8,7 +8,7 @@ class ExpnseService {
   //Define the key for storing expenses in shared preferences
   static const String _expenseKey = 'expenses';
 
-  //Save the expense to shared preferences
+  //***Save the expense to shared preferences
   Future<void> saveExpenses(Expense expense, BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -55,7 +55,7 @@ class ExpnseService {
     }
   }
 
-  //Load the expenses from shared preferences
+  //***Load the expenses from shared preferences
   Future<List<Expense>> loadExpenses() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     List<String>? existingExpenses = pref.getStringList(_expenseKey);
@@ -69,5 +69,52 @@ class ExpnseService {
     }
 
     return loadedExpenses;
+  }
+
+  //***Delete the expense from shared preferences from the id
+  Future<void> deleteExpense(int id, BuildContext context) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      List<String>? existingExpenses = pref.getStringList(_expenseKey);
+
+      //Convert the existing expenses to a list of Expense objects
+      List<Expense> exsistingExpenseObjects = [];
+
+      if (existingExpenses != null) {
+        exsistingExpenseObjects = existingExpenses
+            .map((e) => Expense.fromJSON(json.decode(e)))
+            .toList();
+      }
+
+      //Remove the expense with the specified id from the list
+      exsistingExpenseObjects.removeWhere((expens) => expens.id == id);
+
+      //Covert the list of Expense object back to a list of strings
+      List<String> updatedExpenses =
+          exsistingExpenseObjects.map((e) => json.encode(e.toJSON())).toList();
+
+      //Save the updated list of expenses to shared preferences
+      await pref.setStringList(_expenseKey, updatedExpenses);
+
+      //show snackbar
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Expense delete Successfully!"),
+          ),
+        );
+      }
+    } catch (error) {
+      print(error.toString());
+      //show snackbar
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Error Deleting Expense!"),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 }
