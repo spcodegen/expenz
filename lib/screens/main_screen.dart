@@ -87,6 +87,41 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  //category total expenses
+  Map<ExpenceCategory, double> calculateExpenseCategories() {
+    Map<ExpenceCategory, double> categoryTotals = {
+      ExpenceCategory.food: 0,
+      ExpenceCategory.health: 0,
+      ExpenceCategory.shopping: 0,
+      ExpenceCategory.subscriptions: 0,
+      ExpenceCategory.transport: 0,
+    };
+
+    for (Expense expense in expenseList) {
+      categoryTotals[expense.category] =
+          categoryTotals[expense.category]! + expense.amount;
+    }
+
+    return categoryTotals;
+  }
+
+  //category total income
+  Map<IncomeCategory, double> calculateIncomeCategories() {
+    Map<IncomeCategory, double> categoryTotals = {
+      IncomeCategory.freelance: 0,
+      IncomeCategory.passive: 0,
+      IncomeCategory.salary: 0,
+      IncomeCategory.sales: 0,
+    };
+
+    for (Income income in incomeList) {
+      categoryTotals[income.category] =
+          categoryTotals[income.category]! + income.amount;
+    }
+
+    return categoryTotals;
+  }
+
   @override
   Widget build(BuildContext context) {
 //screens list
@@ -105,7 +140,10 @@ class _MainScreenState extends State<MainScreen> {
         addExpense: addNewExpense,
         addIncome: addNewIncome,
       ),
-      BudgetScreen(),
+      BudgetScreen(
+        expenseCategoryTotals: calculateExpenseCategories(),
+        incomeCategoryTotals: calculateIncomeCategories(),
+      ),
       ProfileScreen(),
     ];
 

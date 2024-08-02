@@ -42,13 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
       //total amount of expenses
       for (var i = 0; i < widget.expenseList.length; i++) {
         expenseTotal += widget.expenseList[i].amount;
-        print(expenseTotal);
       }
 
       //total amount of incomes
       for (var k = 0; k < widget.incomeList.length; k++) {
         incomeTotal += widget.incomeList[k].amount;
-        print(incomeTotal);
       }
     });
 
